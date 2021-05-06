@@ -3,18 +3,15 @@ import shortid from 'shortid';
 
 class Searchbar extends Component {
     state = {
-        search: ""
+        search: ''
     };
 
     hendleInputChange = event => {
-      /* const {value, name} = event.currentTarget;
-      this.setState({ [name]: value }); */
-        this.setState({search: event.currentTarget.value});
-    }
+        this.setState({ search: event.currentTarget.value });
+    };
 
     handleSubmit = event => {
       event.preventDefault();
-      console.log(this.state);
       this.props.onChangeQuery(this.state.search)
       this.reset()
     };
@@ -28,29 +25,31 @@ class Searchbar extends Component {
         const hendleInputChange = this.hendleInputChange;
 
         return (
-        <>
-            <p>Searchbar</p>
-            <form onSubmit = {this.handleSubmit}>
-                <label>
-            
-                    <input
-                        type="text"
-                        name="searchQuery"
-                        required
-                        id = {shortid.generate()}
-                        value={search}
-                        onChange = {hendleInputChange} 
-                    />
-                </label>
+            <>
+                <header className="Searchbar">
+                    <form className="SearchForm" onSubmit = {this.handleSubmit}>
+                        <button type="submit" className="SearchForm-button">
+                            <span className="SearchForm-button-label">Search</span>
+                        </button>
 
-                <button type="submit">Search</button>
-            </form>
-        </>
-        
-        
+                        <input
+                            className="SearchForm-input"
+                            type="text"
+                            name="searchQuery"
+                            id = {shortid.generate()}
+                            value={search}
+                            /* autocomplete="off" */
+                            /* autofocus */
+                            placeholder="Search images and photos"
+                            onChange = {hendleInputChange}
+                        />
+                    </form>
+                </header>  
+            </>
         )
     }
 };
+
 
 export default Searchbar;
 

@@ -10,7 +10,7 @@ import Loader from './components/Loader';
 class App extends Component {
   state = {
     hits: [],
-    page: 1,
+    page: null,//1
     searchQuery: '',
     error: null,
     showModal: false,
@@ -60,10 +60,21 @@ class App extends Component {
       });
   };
 
-  onChangeQuery = query => {
+  /* onChangeQuery = query => {
+    console.log(query);
+    console.log(this.state.searchQuery);
     this.setState({
       searchQuery: query
     })
+  }; */
+
+  onChangeQuery = query => {
+    if (query !== this.state.searchQuery) {
+      this.setState({ hits: [], page: 1 });
+    }
+    this.setState({
+      searchQuery: query,
+    });
   };
 
   onHitClick = (hit, tags) => {
@@ -82,7 +93,7 @@ class App extends Component {
       showModal,
       isLoading,
       page,
-      /* error, */
+      error,
       fetchLength,
     } = this.state;
 
@@ -93,13 +104,34 @@ class App extends Component {
 
     return (
       <div>
-        <Searchbar onChangeQuery={onChangeQuery} />
-        <ImageGallery hits={hits} onClick={onHitClick} />
+        <Searchbar
+          onChangeQuery={onChangeQuery}
+        />
+
+        <ImageGallery
+          hits={hits}
+          onClick={onHitClick}
+        />
+
         {hits.length !== 0 && fetchLength === 12 && !isLoading &&
-          <Button onClick={fetchImgs} page={page} />}
+          <Button
+            onClick={fetchImgs}
+            page={page}
+          />
+        }
+
         {isLoading && (<Loader />)}
+
+        {error && (
+          alert("Please try again")
+        )}
+
         {showModal && (
-          <Modal url={largeImg} alt={largeImgTags} onClose={toggleModal} />
+          <Modal
+            url={largeImg}
+            alt={largeImgTags}
+            onClose={toggleModal}
+          />
         )}
       </div>
     );
